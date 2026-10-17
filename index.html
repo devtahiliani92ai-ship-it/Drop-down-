@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dropzone — File Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" data-page="Dashboard"><span class="brand-mark">↑</span><span>Dropzone</span></a>
+    <label class="search"><span>⌕</span><input id="searchInput" placeholder="Search files, folders..." autocomplete="off"></label>
+    <div class="top-actions"><button class="icon-btn" id="notificationsBtn" title="Notifications">♧<i></i></button><button class="profile" id="profileBtn"><span class="avatar">PJ</span><span class="profile-name">Piyush Jangir</span><span>⌄</span></button></div>
+  </header>
+  <aside class="sidebar">
+    <nav id="navigation">
+      <button class="nav-item active" data-page="Dashboard"><span>⌂</span>Dashboard</button>
+      <button class="nav-item" data-page="My Files"><span>▱</span>My Files</button>
+      <button class="nav-item" data-page="Shared with Me"><span>♧</span>Shared with Me</button>
+      <button class="nav-item" data-page="Recent"><span>◷</span>Recent</button>
+      <button class="nav-item" data-page="Starred"><span>☆</span>Starred</button>
+      <button class="nav-item" data-page="Trash"><span>♜</span>Trash</button>
+      <div class="nav-divider"></div>
+      <button class="nav-item" data-page="Settings"><span>⚙</span>Settings</button>
+      <button class="nav-item" data-page="Help & Support"><span>ⓘ</span>Help &amp; Support</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="storage-mini"><span class="storage-dot"></span><b id="sidebarStorage">0 MB of 10 GB used</b><div class="progress"><span id="sidebarProgress"></span></div></div><button class="nav-item" id="themeBtn"><span>☾</span>Toggle theme</button></div>
+  </aside>
+  <main class="main">
+    <div class="page-heading">
+      <div><p class="eyebrow">YOUR FILES, SIMPLIFIED</p><h1 id="pageTitle">Your workspace</h1><p class="subtitle" id="pageSubtitle">Upload, preview, and organize your files in one place.</p></div>
+      <button class="primary-btn" id="topUploadBtn"><span>＋</span> Upload files</button>
+    </div>
+    <section class="stats" id="stats">
+      <article class="stat-card"><div class="stat-icon purple">▤</div><div><p>Total files</p><strong id="totalFiles">0</strong><small class="green">↗ Your library</small></div></article>
+      <article class="stat-card"><div class="stat-icon mint">▤</div><div><p>Storage used</p><strong id="storageUsed">0 MB <small>/ 10 GB</small></strong><div class="progress"><span id="storageProgress"></span></div></div></article>
+      <article class="stat-card"><div class="stat-icon blue">⇧</div><div><p>Recent uploads</p><strong id="recentUploads">0</strong><small class="green">This workspace</small></div></article>
+      <article class="stat-card"><div class="stat-icon rose">↗</div><div><p>Shared links</p><strong id="sharedLinks">0</strong><small class="green">Manage sharing</small></div></article>
+    </section>
+    <section class="workspace-grid" id="dashboardGrid">
+      <div class="left-column">
+        <section class="upload-card card">
+          <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose or drop files">
+            <div class="cloud-icon">↑</div><h3>Drag &amp; drop files here</h3><p>or <button id="browseBtn" class="text-btn">browse</button> from your device</p>
+            <small>Supports images, PDF, DOCX, TXT, MP4 and more <span> | </span> Max size: 100 MB per file</small>
+          </div>
+          <input id="fileInput" type="file" multiple hidden>
+          <div id="uploadQueue" class="upload-queue" hidden></div>
+        </section>
+        <section class="card recent-card">
+          <div class="section-heading"><h2 id="listTitle">Recent files</h2><button class="text-btn" id="viewAllBtn">View all →</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Name</th><th>Type</th><th>Size</th><th>Uploaded on</th><th>Status</th><th></th></tr></thead><tbody id="fileTable"></tbody></table></div>
+          <div class="empty-state" id="emptyState" hidden><div class="empty-icon">▤</div><b>No files here yet</b><p>Upload your first file to see it in this workspace.</p><button class="primary-btn" id="emptyUploadBtn">＋ Upload a file</button></div>
+        </section>
+      </div>
+      <div class="right-column">
+        <section class="card preview-card">
+          <div class="section-heading"><h2>Instant preview</h2><button class="icon-btn" id="expandPreview" title="Open preview">⛶</button></div>
+          <div class="preview-toolbar"><button id="prevFile" title="Previous file">‹</button><button id="nextFile" title="Next file">›</button><span class="page-count" id="previewCount">0 / 0</span><span class="toolbar-separator"></span><button id="zoomOut">−</button><button id="zoomIn">＋</button><span class="zoom-value" id="zoomValue">100%</span><button id="downloadPreview" title="Download">⇩</button><button id="printPreview" title="Print">▤</button></div>
+          <div class="preview-stage" id="previewStage"><div class="preview-placeholder"><div class="placeholder-file">▤</div><b>Your preview appears here</b><p>Select a file from Recent files or upload one.</p></div></div>
+          <div class="preview-meta" id="previewMeta" hidden></div>
+        </section>
+        <section class="card quick-card">
+          <div class="section-heading"><h2>Quick actions</h2></div>
+          <div class="quick-grid">
+            <button class="quick-action quick-blue" id="createFolder"><span>▱</span><div><b>Create folder</b><small>Organize your files</small></div></button>
+            <button class="quick-action quick-green" id="shareFiles"><span>♧</span><div><b>Share files</b><small>Generate shareable link</small></div></button>
+            <button class="quick-action quick-purple" id="manageAccess"><span>♙</span><div><b>Manage access</b><small>View shared files</small></div></button>
+            <button class="quick-action quick-red" id="recentlyDeleted"><span>♜</span><div><b>Recently deleted</b><small>Restore your files</small></div></button>
+          </div>
+        </section>
+      </div>
+    </section>
+    <section class="card secondary-page" id="secondaryPage" hidden></section>
+    <footer>Dropzone · File management made simple <span>Files stay in this browser in this demo.</span></footer>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+  <dialog id="appDialog">
+    <form method="dialog" class="dialog-form" id="dialogForm">
+      <div class="dialog-head"><h2 id="dialogTitle">Action</h2><button class="icon-btn" value="cancel" aria-label="Close">✕</button></div>
+      <div id="dialogBody"></div>
+      <div class="dialog-actions"><button class="secondary-btn" value="cancel">Cancel</button><button class="primary-btn" id="dialogConfirm" value="confirm">Continue</button></div>
+    </form>
+  </dialog>
+  <script src="app.js"></script>
+</body>
+</html>
